@@ -1,6 +1,4 @@
 import streamlit as st
-import os  # Import the os module
-
 from langchain_core.messages import AIMessage, HumanMessage
 from langchain_community.document_loaders import WebBaseLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -28,7 +26,7 @@ def get_vectorstore_from_url(url):
     return vector_store
 
 def get_context_retriever_chain(vector_store):
-    llm = ChatOpenAI()
+    llm = ChatOpenAI(openai_api_key=st.secrets["openai"]["OPENAI_API_KEY"])  # Pass the API key as a named parameter
     
     retriever = vector_store.as_retriever()
     
@@ -44,7 +42,7 @@ def get_context_retriever_chain(vector_store):
     
 def get_conversational_rag_chain(retriever_chain): 
     
-    llm = ChatOpenAI()
+    llm = ChatOpenAI(openai_api_key=st.secrets["openai"]["OPENAI_API_KEY"])  # Pass the API key as a named parameter
     
     prompt = ChatPromptTemplate.from_messages([
       ("system", "Answer the user's questions based on the below context:\n\n{context}"),
@@ -88,12 +86,6 @@ else:
     if "vector_store" not in st.session_state:
         st.session_state.vector_store = get_vectorstore_from_url(website_url)    
 
-    # Retrieve the OpenAI API key from Streamlit secrets
-    openai_api_key = st.secrets["openai"]["OPENAI_API_KEY"]
-    
-    # Set the OpenAI API key as an environment variable
-    os.environ["OPENAI_API_KEY"] = openai_api_key
-    
     # user input
     user_query = st.text_input("Type your message here...")
     if user_query is not None and user_query != "":
