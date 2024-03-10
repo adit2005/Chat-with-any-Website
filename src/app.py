@@ -66,8 +66,8 @@ def get_response(user_input):
     
     return response['answer']
 
-# Set the OpenAI API key as an environment variable
-os.environ["OPENAI_API_KEY"] = st.secrets["openai"]["OPENAI_API_KEY"]
+# Set the Gemini API key as an environment variable
+os.environ["GEMINI_API_KEY"] = st.secrets["gemini"]["GEMINI_API_KEY"]
 
 # app config
 st.set_page_config(page_title="Chat with websites", page_icon="🤖")
