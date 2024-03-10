@@ -1,4 +1,5 @@
 import streamlit as st
+import os
 from langchain_core.messages import AIMessage, HumanMessage
 from langchain_community.document_loaders import WebBaseLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -26,7 +27,7 @@ def get_vectorstore_from_url(url):
     return vector_store
 
 def get_context_retriever_chain(vector_store):
-    llm = ChatOpenAI(openai_api_key=st.secrets["openai"]["OPENAI_API_KEY"])  # Set the API key
+    llm = ChatOpenAI()
     
     retriever = vector_store.as_retriever()
     
@@ -42,7 +43,7 @@ def get_context_retriever_chain(vector_store):
     
 def get_conversational_rag_chain(retriever_chain): 
     
-    llm = ChatOpenAI(openai_api_key=st.secrets["openai"]["OPENAI_API_KEY"])  # Set the API key
+    llm = ChatOpenAI()
     
     prompt = ChatPromptTemplate.from_messages([
       ("system", "Answer the user's questions based on the below context:\n\n{context}"),
@@ -64,6 +65,9 @@ def get_response(user_input):
     })
     
     return response['answer']
+
+# Set the OpenAI API key as an environment variable
+os.environ["OPENAI_API_KEY"] = st.secrets["openai"]["OPENAI_API_KEY"]
 
 # app config
 st.set_page_config(page_title="Chat with websites", page_icon="🤖")
