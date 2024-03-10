@@ -1,4 +1,6 @@
 import streamlit as st
+import os  # Import the os module
+
 from langchain_core.messages import AIMessage, HumanMessage
 from langchain_community.document_loaders import WebBaseLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -89,7 +91,7 @@ else:
     # Retrieve the OpenAI API key from Streamlit secrets
     openai_api_key = st.secrets["openai"]["OPENAI_API_KEY"]
     
-    # Use the API key in your Langchain configuration
+    # Set the OpenAI API key as an environment variable
     os.environ["OPENAI_API_KEY"] = openai_api_key
     
     # user input
