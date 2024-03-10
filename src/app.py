@@ -1,5 +1,3 @@
-# pip install streamlit langchain lanchain-openai beautifulsoup4 python-dotenv chromadb
-
 import streamlit as st
 from langchain_core.messages import AIMessage, HumanMessage
 from langchain_community.document_loaders import WebBaseLoader
@@ -10,7 +8,6 @@ from dotenv import load_dotenv
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain.chains import create_history_aware_retriever, create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
-
 
 load_dotenv()
 
@@ -89,15 +86,19 @@ else:
     if "vector_store" not in st.session_state:
         st.session_state.vector_store = get_vectorstore_from_url(website_url)    
 
+    # Retrieve the OpenAI API key from Streamlit secrets
+    openai_api_key = st.secrets["openai"]["OPENAI_API_KEY"]
+    
+    # Use the API key in your Langchain configuration
+    os.environ["OPENAI_API_KEY"] = openai_api_key
+    
     # user input
-    user_query = st.chat_input("Type your message here...")
+    user_query = st.text_input("Type your message here...")
     if user_query is not None and user_query != "":
         response = get_response(user_query)
         st.session_state.chat_history.append(HumanMessage(content=user_query))
         st.session_state.chat_history.append(AIMessage(content=response))
         
-       
-
     # conversation
     for message in st.session_state.chat_history:
         if isinstance(message, AIMessage):
