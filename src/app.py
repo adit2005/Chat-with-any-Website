@@ -26,7 +26,8 @@ def get_vectorstore_from_url(url):
     return vector_store
 
 def get_context_retriever_chain(vector_store):
-    llm = ChatOpenAI(openai_api_key=st.secrets["openai"]["OPENAI_API_KEY"])  # Pass the API key as a named parameter
+    llm = ChatOpenAI()
+    llm.set_api_key(st.secrets["openai"]["OPENAI_API_KEY"])  # Set the API key
     
     retriever = vector_store.as_retriever()
     
@@ -42,7 +43,8 @@ def get_context_retriever_chain(vector_store):
     
 def get_conversational_rag_chain(retriever_chain): 
     
-    llm = ChatOpenAI(openai_api_key=st.secrets["openai"]["OPENAI_API_KEY"])  # Pass the API key as a named parameter
+    llm = ChatOpenAI()
+    llm.set_api_key(st.secrets["openai"]["OPENAI_API_KEY"])  # Set the API key
     
     prompt = ChatPromptTemplate.from_messages([
       ("system", "Answer the user's questions based on the below context:\n\n{context}"),
