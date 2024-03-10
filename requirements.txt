@@ -2,7 +2,8 @@ langchain==0.1.4
 langchain_community==0.0.16
 langchain_core==0.1.17
 langchain_openai==0.0.5
+langchain_gemini==0.1.0  # Add langchain_gemini with the appropriate version
 python-dotenv==1.0.1
 streamlit==1.30.0
-chromadb==0.3.29
+chromadb==0.3.29  # Update chromadb to the desired version
 beautifulsoup4==4.12.2
